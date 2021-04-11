@@ -1,4 +1,3 @@
-import 'package:abdelkader1/constants/constants.dart';
 import 'package:abdelkader1/controllers/controllers.dart';
 import 'package:abdelkader1/ui/ui.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,8 +37,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/",
-      getPages: AppRoutes.routes,
+      //initialRoute: "/",
+      //getPages: AppRoutes.routes,
+      home: ChefsScreen(),
     );
   }
 }
