@@ -17,7 +17,7 @@ class UserCard extends StatelessWidget {
           trailing: Icon(Icons.chevron_right),
           leading: CircleAvatar(
             radius: 25.0,
-            backgroundImage: AssetImage('assets/61205.png'),
+            backgroundImage: AssetImage('assets/images/user.png'),
             backgroundColor: Colors.white,
           ),
           title: Text(

@@ -9,3 +9,8 @@ export 'transactions.dart';
 export 'users.dart';
 export 'workers.dart';
 export 'worker_transaction.dart';
+export 'nouriture.dart';
+export 'achatMateriaux.dart';
+export 'gaz.dart';
+export 'payement.dart';
+export 'chantiers.dart';

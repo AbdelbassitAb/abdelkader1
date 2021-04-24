@@ -19,14 +19,36 @@ class Transaction_Card extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             children: [
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(data.name.toString(),style: TextStyle(color: Colors.grey,fontSize: 16),),
+                    Text(
+                      data.chantier,
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
 
 
-              data.workerId != null ?
+
 
               Text(
-                '${data.name} a payé ${data.workerName}',
+                '${data.type}',
                 style: TextStyle(fontSize: 18, color: Colors.black,fontWeight: FontWeight.bold),
-              ) : SizedBox(),
+              ) ,
+
+              data.workerId == '' ?
+              SizedBox() : Text(
+                'Travailleur:${data.workerName}',
+                style: TextStyle(fontSize: 18, color: Colors.black),
+              ) ,
+
+
 
               SizedBox(
                 height: 5,
@@ -42,7 +64,7 @@ class Transaction_Card extends StatelessWidget {
 
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                const EdgeInsets.symmetric( horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -1,9 +1,11 @@
 import 'package:abdelkader1/models/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 import 'controllers.dart';
 
-class AuthController {
+class AuthController extends GetxController{
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Chef _userFromFirebaseUser(User user) {

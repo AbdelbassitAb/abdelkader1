@@ -11,8 +11,26 @@ void main() async {
   await GetStorage.init();
   Get.put<AuthController>(AuthController());
   Get.put<DataBaseController>(DataBaseController());
-  runApp(App());
+  runApp(TestApp());
+
 }
+
+
+class TestApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title:Text('title'),centerTitle: true, ),
+        drawer: MainDrawer(
+
+        ),
+        body: Container(),
+      ),
+    );
+  }
+}
+
 
 class App extends StatelessWidget {
   @override

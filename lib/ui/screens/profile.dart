@@ -259,7 +259,7 @@ class _ProfileState extends State<Profile> {
                                   radius: 60,
                                   backgroundColor: Colors.white,
                                   backgroundImage:
-                                  AssetImage('assets/61205.png'),
+                                  AssetImage('assets/images/user.png'),
                                 ),
                               ),
                               SizedBox(
@@ -497,13 +497,13 @@ class _ProfileState extends State<Profile> {
                                           if(_currentMoney <
                                               this.widget.money){
                                             await DataBaseController(uid: this.widget.uid).updateUserTransaction( uuid.v4(), '' , 'Abdelkader a payé ${this.widget.name}',  dateFormat.format(DateTime.now()),  _currentMoney ??
-                                                this.widget.money,- double.parse(somme), Workerr(), false);
+                                                this.widget.money,- double.parse(somme), Workerr(), false,'','');
 
                                           }
                                           if(_currentMoney >
                                               this.widget.money){
                                             await DataBaseController(uid: this.widget.uid).updateUserTransaction( uuid.v4(), '' , 'Abdelkader a payé ${this.widget.name}',  dateFormat.format(DateTime.now()),  _currentMoney ??
-                                                this.widget.money,double.parse(somme), Workerr(), false);
+                                                this.widget.money,double.parse(somme), Workerr(), false,'','');
 
                                           }
 

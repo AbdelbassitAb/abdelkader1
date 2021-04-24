@@ -33,6 +33,8 @@ class _TransactionsState extends State<Transactions> {
 
   @override
   void initState() {
+    print(this.widget.uid);
+
     chefData = ChefData(
         uid: this.widget.uid,
         argent: this.widget.money,

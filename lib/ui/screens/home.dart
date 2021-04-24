@@ -1,6 +1,7 @@
 import 'package:abdelkader1/controllers/controllers.dart';
 import 'package:abdelkader1/models/models.dart';
 import 'package:abdelkader1/ui/components/components.dart';
+
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -14,6 +15,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
       appBar: AppBar(
         title: Text('Page principale'),
         centerTitle: true,
