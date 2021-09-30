@@ -1,4 +1,4 @@
-
+import 'package:abdelkader1/constants/colors.dart';
 import 'package:abdelkader1/controllers/controllers.dart';
 import 'package:abdelkader1/models/models.dart';
 import 'package:abdelkader1/ui/ui.dart';
@@ -14,34 +14,36 @@ class _UsersState extends State<Users> {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<ChefData>>.value(
-      value: DataBaseController().chefs ,
+      value: DataBaseController().chefs,
       child: Scaffold(
+        drawer: MainDrawer(),
         appBar: AppBar(
           title: Text(
-            'Chefs chantier',
+            'Chefs chantiers',
           ),
           centerTitle: true,
+          backgroundColor: primaryColor,
         ),
-        body: Stack(
-          children: <Widget>[
-
-            UsersList(),
-            Positioned(
-              bottom: 20,
-              right: 20,
-              child: FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddChefScreen()));
-                },
-              ),
-            ),
-
-
-          ],
+        body: UsersList(),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: primaryColor,
+          onPressed: () async {
+            await showModalBottomSheet<dynamic>(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) {
+                  return Container(
+                    decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(25.0),
+                            topRight: const Radius.circular(25.0))),
+                    child: Wrap(children: [AddChefScreen()]),
+                  );
+                });
+          },
         ),
       ),
     );

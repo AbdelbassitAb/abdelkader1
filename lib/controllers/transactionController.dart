@@ -19,12 +19,13 @@ class TransactionsController extends GetxController {
   TextEditingController sommeTextfield = TextEditingController();
 
 
-  void init(TR transaction){
+  void init(TR transaction,String typee){
     currentMoney(transaction.argent.toInt());
     descriptionTextfield.text =
         transaction.description ?? '';
-    chantier(transaction.chantier);
-    type(transaction.type);
+      type(transaction.type ?? typee);
+      chantier(transaction.chantier ?? '') ;
+
     sommeTextfield.text =
         transaction.somme != 0 ?  transaction.somme.toInt().toString() : ''.toString();
 

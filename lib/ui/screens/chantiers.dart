@@ -1,30 +1,18 @@
-import 'package:abdelkader1/constants/constants.dart';
+import 'package:abdelkader1/constants/colors.dart';
 import 'package:abdelkader1/controllers/controllers.dart';
 import 'package:abdelkader1/models/models.dart';
-import 'package:abdelkader1/ui/ui.dart';
+import 'package:abdelkader1/ui/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 
-class Workers extends StatefulWidget {
+class Chantiers extends StatefulWidget {
   @override
-  _WorkersState createState() => _WorkersState();
+  _ChantiersState createState() => _ChantiersState();
 }
 
-class _WorkersState extends State<Workers> {
+class _ChantiersState extends State<Chantiers> {
   String name;
-  var uuid = Uuid();
-
   final _formKey1 = GlobalKey<FormState>();
-
-  final TransactionsController transactionsController =
-      Get.put(TransactionsController());
-
-  @override
-  void initState() {
-    name = '';
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,46 +22,23 @@ class _WorkersState extends State<Workers> {
         barrierDismissible: true, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
             title: Text(
-              'Ajouter un travailleur',
+              'Ajouter un chantier',
               style: TextStyle(color: primaryColor),
             ),
-            content:
-                GetX<TransactionsController>(builder: (transactionsController) {
-              return SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    transactionsController.loading.value
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Form(
-                            key: _formKey1,
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  decoration: textinputDecoration.copyWith(
-                                    hintText: 'Nom',
-                                    prefixIcon: Icon(
-                                      Icons.person,
-                                      color: primaryColor,
-                                    ),
-                                  ),
-                                  validator: (val) =>
-                                      val.isEmpty ? 'Entrer un nom svp' : null,
-                                  onChanged: (val) =>
-                                      setState(() => name = val),
-                                ),
-                              ],
-                            ),
-                          )
-                  ],
-                ),
-              );
-            }),
+            content: Form(
+              key: _formKey1,
+              child: TextFormField(
+                decoration: textinputDecoration.copyWith(
+                    hintText: 'Nom',
+                    prefixIcon: Icon(
+                      Icons.place,
+                      color: primaryColor,
+                    )),
+                validator: (val) => val.isEmpty ? 'Entrer un nom svp' : null,
+                onChanged: (val) => setState(() => name = val),
+              ),
+            ),
             actions: <Widget>[
               ElevatedButton(
                   style: ButtonStyle(
@@ -94,13 +59,10 @@ class _WorkersState extends State<Workers> {
                   ),
                   onPressed: () async {
                     if (_formKey1.currentState.validate()) {
-                      transactionsController.loading(true);
                       Navigator.pop(context);
-                      await DataBaseController().updateWorkerData(
-                        uuid.v4(),
+                      await DataBaseController().updateChantier(
                         name,
                       );
-                      transactionsController.loading(false);
                     }
                   }),
             ],
@@ -112,22 +74,22 @@ class _WorkersState extends State<Workers> {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        title: Text('Travailleurs'),
+        title: Text('Chantiers'),
         centerTitle: true,
         backgroundColor: primaryColor,
       ),
-      body: StreamBuilder<List<Workerr>>(
-          stream: DataBaseController().workers,
+      body: StreamBuilder<List<Chantier>>(
+          stream: DataBaseController().chantiers,
           builder: (context, snapshot) {
             return snapshot.hasData
                 ? snapshot.data.length == 0
                     ? Center(
-                        child: Text('Pas de travailleur trouvé'),
+                        child: Text('Pas de chantier trouvé'),
                       )
                     : ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
-                          return Worker_card(data: snapshot.data[index]);
+                          return Chantier_card(data: snapshot.data[index]);
                         },
                       )
                 : Center(

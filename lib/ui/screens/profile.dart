@@ -1,4 +1,4 @@
-
+import 'package:abdelkader1/constants/colors.dart';
 import 'package:abdelkader1/controllers/controllers.dart';
 import 'package:abdelkader1/models/models.dart';
 import 'package:abdelkader1/ui/components/components.dart';
@@ -6,10 +6,10 @@ import 'package:abdelkader1/ui/ui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
-
 
 class Profile extends StatefulWidget {
   final String uid;
@@ -20,15 +20,14 @@ class Profile extends StatefulWidget {
   final bool deleted;
   final String pic;
 
-
   Profile(
       {this.uid,
-        this.name,
-        this.email,
-        this.phoneNumber,
-        this.money,
-        this.deleted,
-        this.pic});
+      this.name,
+      this.email,
+      this.phoneNumber,
+      this.money,
+      this.deleted,
+      this.pic});
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -40,7 +39,6 @@ class _ProfileState extends State<Profile> {
   String errorMsg;
   DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm");
   var uuid = Uuid();
-
 
   final _formKey = GlobalKey<FormState>();
   final _formKey1 = GlobalKey<FormState>();
@@ -54,7 +52,7 @@ class _ProfileState extends State<Profile> {
 
   Future<void> GetImage() async {
     final ref =
-    FirebaseStorage.instance.ref().child('uploads/${this.widget.pic}');
+        FirebaseStorage.instance.ref().child('uploads/${this.widget.pic}');
 // no need of the file extension, the name will do fine.
     var url1 = await ref.getDownloadURL();
     setState(() {
@@ -77,11 +75,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-
-
     Size size = MediaQuery.of(context).size;
 
-    Future<void> _DeleteMsg() async {
+    Future<void> _deleteMsg() async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -105,8 +101,8 @@ class _ProfileState extends State<Profile> {
                       this.widget.phoneNumber,
                       this.widget.money,
                       true);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ChefsScreen()));
+                  Get.back();
+                  Get.back();
                 },
               ),
               TextButton(
@@ -129,54 +125,34 @@ class _ProfileState extends State<Profile> {
           return AlertDialog(
             title: Text('Entrer une somme'),
             content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Form(
-                    key: _formKey1,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: textinputDecoration.copyWith(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      validator: (val) =>
-                      val.isEmpty ? 'entrer un numero' : null,
-                      onChanged: (val) => setState(() => somme = val),
-                    ),
-                  )
-                ],
+              child: Form(
+                key: _formKey1,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: textinputDecoration,
+                  validator: (val) => val.isEmpty ? 'entrer un numero' : null,
+                  onChanged: (val) => setState(() => somme = val),
+                ),
               ),
             ),
             actions: <Widget>[
-              RaisedButton(
-                  color: Colors.green,
-                  child: Text('Ajouter'),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.green),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ))),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      'Ajouter',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
                   onPressed: () {
                     if (_formKey1.currentState.validate()) {
                       setState(() {
@@ -185,9 +161,23 @@ class _ProfileState extends State<Profile> {
                       Navigator.of(context).pop();
                     }
                   }),
-              RaisedButton(
-                  color: Colors.red,
-                  child: Text('Substituer'),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ))),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      'Ajouter',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       setState(() {
@@ -204,324 +194,262 @@ class _ProfileState extends State<Profile> {
     }
 
     return StreamProvider<CollectionReference>.value(
-      child: MaterialApp(
-        home: SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text('Profile'),
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      //DatabaseService().deleteChef(this.widget.uid);
-                      _DeleteMsg();
-                    },
-                  ),
-                )
-              ],
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: primaryColor,
+          appBar: AppBar(
+            title: Text('Profile'),
+            elevation: 0,
+            centerTitle: true,
+            backgroundColor: primaryColor,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            body: Stack(
-              children: <Widget>[
-                Positioned(
-                  child: Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Container(
-                        width: size.width * 0.8,
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {},
-                                child: url != null
-                                    ? Container(
-                                  height: 120,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: NetworkImage(url),
-                                        fit: BoxFit.cover),
-                                    color: Colors.grey,
-                                    shape: BoxShape.circle,
-                                  ),
-                                )
-                                    : CircleAvatar(
-                                  radius: 60,
-                                  backgroundColor: Colors.white,
-                                  backgroundImage:
-                                  AssetImage('assets/images/user.png'),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    //DatabaseService().deleteChef(this.widget.uid);
+                    _deleteMsg();
+                  },
+                ),
+              )
+            ],
+          ),
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+
+                GestureDetector(
+                  onTap: () {},
+                  child: url != null
+                      ? Container(
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(url),
+                          fit: BoxFit.cover),
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  )
+                      : CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.white,
+                    backgroundImage:
+                    AssetImage('assets/images/user.png'),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:Radius.circular(20) ),
+                    ),
+                    child: Column(children: [
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+
+                            TextFormField(
+                              initialValue: this.widget.name,
+                              decoration: textinputDecoration.copyWith(
+                                prefixIcon: Icon(
+                                  Icons.person_outline,
+                                  color: primaryColor,
                                 ),
                               ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                initialValue: this.widget.name,
-                                decoration: textinputDecoration.copyWith(
-                                  prefixIcon: Icon(
-                                    Icons.person,
-                                    color: Colors.blue,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                              validator: (val) =>
+                                  val.isEmpty ? 'entrer un nom' : null,
+                              onChanged: (val) => setState(() => _currentName = val),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextFormField(
+                              initialValue: this.widget.email,
+                              decoration: textinputDecoration.copyWith(
+                                prefixIcon: Icon(
+                                  Icons.email_outlined,
+                                  color: primaryColor,
                                 ),
-                                validator: (val) =>
-                                val.isEmpty ? 'entrer un nom' : null,
-                                onChanged: (val) =>
-                                    setState(() => _currentName = val),
                               ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                initialValue: this.widget.email,
-                                decoration: textinputDecoration.copyWith(
-                                  prefixIcon: Icon(
-                                    Icons.email_outlined,
-                                    color: Colors.blue,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                              validator: (val) =>
+                                  val.isEmpty ? 'entrer un email' : null,
+                              onChanged: (val) => setState(() => _currentEmail = val),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              initialValue: this.widget.phoneNumber,
+                              decoration: textinputDecoration.copyWith(
+                                prefixIcon: Icon(
+                                  Icons.phone_outlined,
+                                  color: primaryColor,
                                 ),
-                                validator: (val) => val.isEmpty
-                                    ? 'entrer un email'
-                                    : null,
-                                onChanged: (val) =>
-                                    setState(() => _currentEmail = val),
                               ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              TextFormField(
-                                keyboardType: TextInputType.number,
-                                initialValue: this.widget.phoneNumber,
-                                decoration: textinputDecoration.copyWith(
-                                  prefixIcon: Icon(
-                                    Icons.phone_outlined,
-                                    color: Colors.blue,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.red,
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                validator: (val) => val.isEmpty
-                                    ? 'entrer un numero de telephone'
-                                    : null,
-                                onChanged: (val) =>
-                                    setState(() => _currentPhoneNumber = val),
-                              ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                height: 47,
-                                width: size.width * 0.9,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                      width: 2,
-                                    )),
-                                child: Row(children: <Widget>[
-                                  Icon(
-                                    Icons.attach_money,
-                                    size: 25,
-                                    color: Colors.blue,
-                                  ),
-                                  SizedBox(
-                                    width: 13,
-                                  ),
-                                  Text(
-                                    _currentMoney.toString(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Text(
-                                    '   DA',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  Expanded(
-                                    child: SizedBox(),
-                                  ),
-                                  IconButton(
-                                      icon: Icon(
-                                        Icons.edit,
-                                        size: 25,
-                                        color: Colors.black,
-                                      ),
-                                      onPressed: _showMyDialog),
-                                ]),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                width: size.width * 0.5,
-                                height: 50,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: RaisedButton(
-                                      color: (_currentPhoneNumber !=
-                                          this.widget.phoneNumber ||
-                                          _currentEmail !=
-                                              this.widget.email ||
-                                          _currentName !=
-                                              this.widget.name ||
-                                          _currentMoney !=
-                                              this.widget.money)
-                                          ? Colors.red
-                                          : Colors.grey,
-                                      child: Text(
-                                        'Modifier',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
-                                      onPressed: (_currentPhoneNumber !=
-                                          this.widget.phoneNumber ||
-                                          _currentEmail !=
-                                              this.widget.email ||
-                                          _currentName !=
-                                              this.widget.name ||
-                                          _currentMoney !=
-                                              this.widget.money)
-                                          ? () async {
-                                        if (_formKey.currentState
-                                            .validate()) {
-                                          await DataBaseController(
-                                              uid: this.widget.uid)
-                                              .updateUserData(
-                                              this.widget.uid,
-                                              _currentName ??
-                                                  this.widget.name,
-                                              _currentEmail ??
-                                                  this.widget.email,
-                                              _currentPhoneNumber ??
-                                                  this
-                                                      .widget
-                                                      .phoneNumber,
-                                              _currentMoney ??
-                                                  this.widget.money,
-                                              this.widget.deleted);
+                              validator: (val) => val.isEmpty
+                                  ? 'entrer un numero de telephone'
+                                  : null,
+                              onChanged: (val) =>
+                                  setState(() => _currentPhoneNumber = val),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
 
 
-                                          if(_currentMoney <
-                                              this.widget.money){
-                                            await DataBaseController(uid: this.widget.uid).updateUserTransaction( uuid.v4(), '' , 'Abdelkader a payé ${this.widget.name}',  dateFormat.format(DateTime.now()),  _currentMoney ??
-                                                this.widget.money,- double.parse(somme), Workerr(), false,'','');
 
+                            Container(
+                              alignment: Alignment.centerLeft,
+                            //  height: 47,
+                              width: size.width * 0.9,
+                              padding:
+                                  EdgeInsets.symmetric( horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: primaryColor,
+                                    width: 2,
+                                  )),
+                              child: Row(children: <Widget>[
+                                Icon(
+                                  Icons.attach_money,
+                                  size: 25,
+                                  color: primaryColor,
+                                ),
+                                SizedBox(
+                                  width: 13,
+                                ),
+                                Text(
+                                  _currentMoney.toString(),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(
+                                  '   DA',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Expanded(
+                                  child: SizedBox(),
+                                ),
+                                IconButton(
+                                    icon: Icon(
+                                      Icons.edit,
+                                      size: 25,
+                                      color: primaryColor,
+                                    ),
+                                    onPressed: _showMyDialog),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 50,
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: RaisedButton(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                    color: (_currentPhoneNumber !=
+                                                this.widget.phoneNumber ||
+                                            _currentEmail != this.widget.email ||
+                                            _currentName != this.widget.name ||
+                                            _currentMoney != this.widget.money)
+                                        ? primaryColor
+                                        : Colors.grey,
+                                    child: Text(
+                                      'Modifier',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: (_currentPhoneNumber !=
+                                                this.widget.phoneNumber ||
+                                            _currentEmail != this.widget.email ||
+                                            _currentName != this.widget.name ||
+                                            _currentMoney != this.widget.money)
+                                        ? () async {
+                                            if (_formKey.currentState.validate()) {
+                                              await DataBaseController(
+                                                      uid: this.widget.uid)
+                                                  .updateUserData(
+                                                      this.widget.uid,
+                                                      _currentName ??
+                                                          this.widget.name,
+                                                      _currentEmail ??
+                                                          this.widget.email,
+                                                      _currentPhoneNumber ??
+                                                          this.widget.phoneNumber,
+                                                      _currentMoney ??
+                                                          this.widget.money,
+                                                      this.widget.deleted);
+
+                                              if (_currentMoney < this.widget.money) {
+                                                await DataBaseController(
+                                                        uid: this.widget.uid)
+                                                    .updateUserTransaction(
+                                                        uuid.v4(),
+                                                        '',
+                                                        'Abdelkader a payé ${this.widget.name}',
+                                                        dateFormat
+                                                            .format(DateTime.now()),
+                                                        _currentMoney ??
+                                                            this.widget.money,
+                                                        -double.parse(somme),
+                                                        Workerr(),
+                                                        false,
+                                                        '',
+                                                        '');
+                                              }
+                                              if (_currentMoney > this.widget.money) {
+                                                await DataBaseController(
+                                                        uid: this.widget.uid)
+                                                    .updateUserTransaction(
+                                                        uuid.v4(),
+                                                        '',
+                                                        'Abdelkader a payé ${this.widget.name}',
+                                                        dateFormat
+                                                            .format(DateTime.now()),
+                                                        _currentMoney ??
+                                                            this.widget.money,
+                                                        double.parse(somme),
+                                                        Workerr(),
+                                                        false,
+                                                        '',
+                                                        '');
+                                              }
+
+                                              Navigator.pop(context);
+                                            }
                                           }
-                                          if(_currentMoney >
-                                              this.widget.money){
-                                            await DataBaseController(uid: this.widget.uid).updateUserTransaction( uuid.v4(), '' , 'Abdelkader a payé ${this.widget.name}',  dateFormat.format(DateTime.now()),  _currentMoney ??
-                                                this.widget.money,double.parse(somme), Workerr(), false,'','');
-
-                                          }
-
-
-
-                                          Navigator.pop(context);
-                                        }
-                                      }
-                                          : null),
-                                ),
+                                        : null),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ),
-                )
+
+                      SizedBox(height: 60,)
+                    ])),
               ],
             ),
           ),

@@ -30,9 +30,7 @@ class AuthController extends GetxController{
           );
       return _userFromFirebaseUser(user);
     } catch (error) {
-      print('error');
-      //print(error.toString());
-      return null;
+      return error.toString();
     }
   }
 

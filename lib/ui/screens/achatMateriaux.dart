@@ -1,29 +1,26 @@
-import 'package:abdelkader1/constants/constants.dart';
+import 'package:abdelkader1/constants/colors.dart';
 import 'package:abdelkader1/controllers/controllers.dart';
 import 'package:abdelkader1/models/models.dart';
 import 'package:abdelkader1/ui/components/components.dart';
-
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
+class AchatMateriaux extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _AchatMateriauxState createState() => _AchatMateriauxState();
 }
 
-class _HomeState extends State<Home> {
-  List<ChefData> list;
-
+class _AchatMateriauxState extends State<AchatMateriaux> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MainDrawer(),
       appBar: AppBar(
-        title: Text('Page principale'),
-        backgroundColor: primaryColor,
+        title: Text('Achat materiaux'),
         centerTitle: true,
+        backgroundColor: primaryColor,
       ),
       body: StreamBuilder<List<TR>>(
-          stream: DataBaseController().allTransactions,
+          stream: DataBaseController().transactionsOf('Achat materiaux'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data != null) {

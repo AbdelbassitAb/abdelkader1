@@ -1,3 +1,4 @@
+import 'package:abdelkader1/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 InputDecoration textinputDecoration = InputDecoration(
@@ -10,18 +11,18 @@ InputDecoration textinputDecoration = InputDecoration(
 
   prefixIcon: Icon(
     Icons.attach_money,
-    color: Colors.blue,
+    color: primaryColor,
   ),
   focusedBorder: OutlineInputBorder(
     borderSide: BorderSide(
-      color: Colors.blue,
+      color: primaryColor,
       width: 2.0,
     ),
     borderRadius: BorderRadius.circular(10),
   ),
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(
-      color: Colors.blue,
+      color: primaryColor,
       width: 2.0,
     ),
     borderRadius: BorderRadius.circular(10),

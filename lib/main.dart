@@ -21,43 +21,12 @@ class TestApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: Scaffold(
-        appBar: AppBar(title:Text('title'),centerTitle: true, ),
         drawer: MainDrawer(
 
         ),
-        body: Container(),
+        body: Home(),
       ),
     );
   }
 }
 
-
-class App extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return ErrorScreen();
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MyApp();
-        }
-        return LoadingScreen();
-      },
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      //initialRoute: "/",
-      //getPages: AppRoutes.routes,
-      home: ChefsScreen(),
-    );
-  }
-}

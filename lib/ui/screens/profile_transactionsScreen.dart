@@ -1,4 +1,5 @@
 
+import 'package:abdelkader1/constants/colors.dart';
 import 'package:abdelkader1/ui/ui.dart';
 import 'package:flutter/material.dart';
 
@@ -64,12 +65,12 @@ class _Profile_TransactionsState extends State<Profile_Transactions> {
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              title: Text('Profile'),
+              icon: Icon(Icons.person_outline,color: _selectedindex == 0 ? primaryColor : Colors.grey,),
+              title: Text('Profile',style: TextStyle(color:  _selectedindex == 0 ? primaryColor : Colors.grey,),),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.cached),
-              title: Text('Transactions'),
+              icon: Icon(Icons.cached,color:  _selectedindex == 1 ? primaryColor : Colors.grey,),
+              title: Text('Transactions',style: TextStyle(color:  _selectedindex == 1 ? primaryColor : Colors.grey,),),
             ),
           ],
           currentIndex: _selectedindex,

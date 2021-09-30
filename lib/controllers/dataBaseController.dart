@@ -1,9 +1,10 @@
+import 'package:abdelkader1/models/chantier.dart';
 import 'package:abdelkader1/models/models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class DataBaseController extends GetxController {
-  static DataBaseController to = Get.find();
+  // static DataBaseController to = Get.find();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   final String uid;
@@ -53,6 +54,14 @@ class DataBaseController extends GetxController {
     });
   }
 
+  Future<void> updateChantier(
+    String name,
+  ) async {
+    return await chantiersCollection.doc(name).set({
+      'name': name,
+    });
+  }
+
   Future<void> updateUserTransaction(
       String uid,
       String name,
@@ -64,7 +73,11 @@ class DataBaseController extends GetxController {
       bool deleted,
       String type,
       String chantier) async {
-    await transactionsCollection.doc('All transactions').collection('Transactions').doc(uid).set({
+    await transactionsCollection
+        .doc('All transactions')
+        .collection('Transactions')
+        .doc(uid)
+        .set({
       'uid': uid,
       'name': name,
       'description': description,
@@ -94,6 +107,12 @@ class DataBaseController extends GetxController {
       'workerName': worker.name,
       'workerId': worker.uid,
       'deleted': deleted,
+    });
+
+    await chantiersCollection
+        .doc(chantier)
+        .set({
+      'name': chantier,
     });
 
     await transactionsCollection
@@ -153,22 +172,28 @@ class DataBaseController extends GetxController {
     });
   }
 
-  /* Future<void> addTransaction(String uid, String name,String description,String time,
-      double argent,double somme,bool deleted) async {
+  Future<void> addTransaction(String uid, String name, String description,
+      String time, double argent, double somme, bool deleted) async {
     return await usersCollection.doc(uid).collection('Transactions').add({
       'uid': uid,
       'name': name,
-      'description' : description,
-      'time' : time,
+      'description': description,
+      'time': time,
       'argent': argent,
-      'somme' : somme,
+      'somme': somme,
       'deleted': deleted,
     });
-  }*/
+  }
 
   List<ChefData> _chefListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return ChefData.fromMap(doc.data());
+    }).toList();
+  }
+
+  List<Chantier> _chantiersListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Chantier.fromMap(doc.data());
     }).toList();
   }
 
@@ -178,17 +203,19 @@ class DataBaseController extends GetxController {
     }).toList();
   }
 
-
-
   List<TR> _transactionsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return TR.fromMap(doc.data());
     }).toList();
   }
 
-  //get brews stream
+
   Stream<List<ChefData>> get chefs {
     return usersCollection.snapshots().map(_chefListFromSnapshot);
+  }
+
+  Stream<List<Chantier>> get chantiers {
+    return chantiersCollection.snapshots().map(_chantiersListFromSnapshot);
   }
 
   Stream<List<Workerr>> get workers {
@@ -197,6 +224,24 @@ class DataBaseController extends GetxController {
 
   Stream<List<TR>> get allTransactions {
     return transactionsCollection
+        .doc('All transactions')
+        .collection('Transactions')
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
+  }
+
+  Stream<List<TR>> transactionsOf(String type) {
+    return transactionsCollection
+        .doc(type)
+        .collection('Transactions')
+        .snapshots()
+        .map(_transactionsListFromSnapshot);
+  }
+
+  Stream<List<TR>> chantier(String name) {
+    return chantiersCollection
+        .doc(name)
+        .collection('Transactions')
         .snapshots()
         .map(_transactionsListFromSnapshot);
   }

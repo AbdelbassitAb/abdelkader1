@@ -1,25 +1,25 @@
 import 'package:abdelkader1/constants/colors.dart';
 import 'package:abdelkader1/controllers/controllers.dart';
 import 'package:abdelkader1/models/models.dart';
-import 'package:abdelkader1/ui/ui.dart';
+import 'package:abdelkader1/ui/components/components.dart';
 import 'package:flutter/material.dart';
 
-class WorkerTransactions extends StatefulWidget {
-  final String uid;
+class ChantierTransactions extends StatefulWidget {
+  final String name;
 
-  WorkerTransactions({this.uid});
+  ChantierTransactions({this.name});
 
   @override
-  _WorkerTransactionsState createState() => _WorkerTransactionsState();
+  _ChantierTransactionsState createState() => _ChantierTransactionsState();
 }
 
-class _WorkerTransactionsState extends State<WorkerTransactions> {
+class _ChantierTransactionsState extends State<ChantierTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Text('Transactions'),
+          title: Text(this.widget.name),
           centerTitle: true,
           backgroundColor: primaryColor,
         ),
@@ -27,7 +27,7 @@ class _WorkerTransactionsState extends State<WorkerTransactions> {
           children: [
             StreamBuilder<List<TR>>(
                 stream:
-                DataBaseController(uid: this.widget.uid).workerTransactions,
+                DataBaseController().chantier(this.widget.name),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data.length != 0) {
