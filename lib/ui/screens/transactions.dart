@@ -55,6 +55,7 @@ class _TransactionsState extends State<Transactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: Colors.grey[50],
       appBar: AppBar(
         elevation: 0,
         title: Text('Transactions'),
@@ -62,7 +63,7 @@ class _TransactionsState extends State<Transactions> {
         backgroundColor: primaryColor,
       ),
       body: StreamBuilder<List<TR>>(
-          stream: DataBaseController(uid: this.widget.uid).transactions,
+          stream: DataBaseController(uid: this.widget.uid).transactionQuery('name', this.widget.name),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.length == 0) {

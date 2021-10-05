@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:abdelkader1/models/models.dart';
@@ -10,28 +9,30 @@ class TransactionsController extends GetxController {
   var somme = '0'.obs;
   var type = ''.obs;
   var chantier = ''.obs;
+  var workerName = ''.obs;
+  var workerId = ''.obs;
+  var firstChantier = ''.obs;
   var currentMoney = 0.obs;
   var loading = false.obs;
 
   var checkBoxValue = false.obs;
-  var selectedWorker = Workerr(name: '',uid: null);
+  var selectedWorker = Workerr(name: '', uid: null);
   TextEditingController descriptionTextfield = TextEditingController();
   TextEditingController sommeTextfield = TextEditingController();
 
-
-  void init(TR transaction,String typee){
+  void init(TR transaction, String typee) {
     currentMoney(transaction.argent.toInt());
-    descriptionTextfield.text =
-        transaction.description ?? '';
-      type(transaction.type ?? typee);
-      chantier(transaction.chantier ?? '') ;
+    descriptionTextfield.text = transaction.description ?? '';
+    type(transaction.type ?? typee);
+    chantier(transaction.chantier ?? '');
 
-    sommeTextfield.text =
-        transaction.somme != 0 ?  transaction.somme.toInt().toString() : ''.toString();
+    selectedWorker.name = transaction.workerName ?? '';
+    selectedWorker.uid = transaction.uid ?? '';
+    workerName(transaction.workerName ?? '');
+    workerId(transaction.workerId ?? '');
 
+    sommeTextfield.text = transaction.somme != 0
+        ? transaction.somme.toInt().toString()
+        : ''.toString();
   }
-
 }
-
-
-

@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
-
 class DescriptionTextField extends StatelessWidget {
   final TransactionsController transactionsController;
 
@@ -19,8 +18,10 @@ class DescriptionTextField extends StatelessWidget {
       controller: transactionsController.descriptionTextfield,
       decoration: textinputDecoration.copyWith(
           labelText: 'Description',
-          prefixIcon: Icon(Icons.textsms_outlined, color: primaryColor,)
-      ),
+          prefixIcon: Icon(
+            Icons.textsms_outlined,
+            color: primaryColor,
+          )),
       validator: (val) => val.isEmpty ? 'Entrer une description svp' : null,
       onChanged: (val) {
         print(transactionsController.chantier.value);
@@ -40,7 +41,6 @@ class MoneyTextField extends StatelessWidget {
       controller: transactionsController.sommeTextfield,
       keyboardType: TextInputType.number,
       decoration: textinputDecoration.copyWith(
-
         labelText: 'somme',
       ),
       validator: (val) => val.isEmpty ? 'entrer une somme svp' : null,
@@ -48,21 +48,7 @@ class MoneyTextField extends StatelessWidget {
   }
 }
 
-class CustomCheckBox extends StatelessWidget {
-  final TransactionsController transactionsController;
 
-  CustomCheckBox(this.transactionsController);
-
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-        value: transactionsController.checkBoxValue.value,
-        activeColor: Colors.green,
-        onChanged: (bool newValue) {
-          transactionsController.checkBoxValue(newValue);
-        });
-  }
-}
 
 class WorkersDropDownField extends StatelessWidget {
   final TR transaction;
@@ -76,12 +62,29 @@ class WorkersDropDownField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool exist = false;
+    for(Workerr element in snapshot.data){
+      if(element.name == ''){
+        exist = true;
+      }
+    }
+    if(exist == false){
+      snapshot.data.add(Workerr(name: '',uid: ''));
+    }
+
+
+
+
     return DropdownButtonFormField(
-      value: transaction.workerName != ''
-          ? transaction.workerName
-          : snapshot.data[0].name,
+      value: transactionsController.workerName.value != ''
+          ? transactionsController.workerName.value
+          : ''/*snapshot.data[0].name*/,
       decoration: textinputDecoration.copyWith(
-        prefixIcon: Icon(Icons.groups, color: primaryColor,),
+        prefixIcon: Icon(
+          Icons.groups,
+          color: primaryColor,
+        ),
       ),
       items: snapshot.data.map((worker) {
         return DropdownMenuItem(
@@ -101,16 +104,21 @@ class TypeDropDownField extends StatelessWidget {
   final List<String> list;
   final TR transaction;
 
-  TypeDropDownField(this.list,
-      this.transactionsController,
-      this.transaction,);
+  TypeDropDownField(
+    this.list,
+    this.transactionsController,
+    this.transaction,
+  );
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
       value: transaction.type != null ? transaction.type : list[0],
       decoration: textinputDecoration.copyWith(
-        prefixIcon: Icon(Icons.list, color: primaryColor,),
+        prefixIcon: Icon(
+          Icons.list,
+          color: primaryColor,
+        ),
       ),
       items: list.map((type) {
         return DropdownMenuItem(
@@ -129,17 +137,38 @@ class ChantierDropDownField extends StatelessWidget {
   final TransactionsController transactionsController;
   final List<Chantier> list;
   final TR transaction;
-  Function onChanged;
 
-  ChantierDropDownField(this.list, this.transactionsController,
-      this.transaction, this.onChanged);
+  ChantierDropDownField(
+      this.list, this.transactionsController, this.transaction,);
 
   @override
   Widget build(BuildContext context) {
+
+    bool exist = false;
+    for(Chantier element in list){
+      if(element.name == ''){
+        exist = true;
+      }
+    }
+    if(exist == false){
+      list.add(Chantier(name: ''));
+    }
+
+  /*  transactionsController.chantier(
+        transaction.chantier != null &&
+            transaction.chantier != ''
+            ? transaction.chantier
+            : list[0].name);*/
+
+
+
     return DropdownButtonFormField(
-      value: transaction.chantier != null ? transaction.chantier : list[0].name,
+      value: transactionsController.chantier.value != '' ? transactionsController.chantier.value : '',
       decoration: textinputDecoration.copyWith(
-        prefixIcon: Icon(Icons.place_outlined, color: primaryColor,),
+        prefixIcon: Icon(
+          Icons.place_outlined,
+          color: primaryColor,
+        ),
       ),
       items: list.map((chantier) {
         return DropdownMenuItem(
@@ -147,7 +176,10 @@ class ChantierDropDownField extends StatelessWidget {
           child: Text(chantier.name),
         );
       }).toList(),
-      onChanged: onChanged,
+      onChanged:(val) {
+        transactionsController.chantier(val);
+        print(transactionsController.chantier.value);
+      },
     );
   }
 }
@@ -167,14 +199,12 @@ class AddEditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
-            foregroundColor:
-            MaterialStateProperty.all<Color>(Colors.white),
-            backgroundColor:
-            MaterialStateProperty.all<Color>(Colors.green),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ))),
+              borderRadius: BorderRadius.circular(10),
+            ))),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Text(
@@ -186,10 +216,12 @@ class AddEditButton extends StatelessWidget {
           if (_formKey1.currentState.validate()) {
             transactionsController.loading(true);
             transactionsController.currentMoney(
-                (double.parse(transactionsController.sommeTextfield.text) +
-                    transactionsController.currentMoney.value -
-                    transaction.somme)
+                (-double.parse(transactionsController.sommeTextfield.text) +
+                        transactionsController.currentMoney.value -
+                        transaction.somme)
                     .toInt());
+
+
 
             await DataBaseController(uid: chefData.uid).updateUserData(
                 chefData.uid,
@@ -200,12 +232,6 @@ class AddEditButton extends StatelessWidget {
                     chefData.argent,
                 chefData.deleted);
 
-            if (transaction.workerName !=
-                transactionsController.selectedWorker.name &&
-                transactionsController.selectedWorker.name != '') {
-              await DataBaseController(uid: chefData.uid)
-                  .deleteWorkersTransaction(transaction.uid);
-            }
             print(transactionsController.chantier.value);
 
             await DataBaseController(uid: chefData.uid).updateUserTransaction(
@@ -215,7 +241,7 @@ class AddEditButton extends StatelessWidget {
                 dateFormat.format(DateTime.now()),
                 transactionsController.currentMoney.value.toDouble() ??
                     chefData.argent,
-                double.parse(transactionsController.sommeTextfield.text),
+                -double.parse(transactionsController.sommeTextfield.text),
                 transactionsController.selectedWorker,
                 chefData.deleted,
                 transactionsController.type.value,
@@ -245,14 +271,12 @@ class DeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
-            foregroundColor:
-            MaterialStateProperty.all<Color>(Colors.white),
-            backgroundColor:
-            MaterialStateProperty.all<Color>(Colors.red),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ))),
+              borderRadius: BorderRadius.circular(10),
+            ))),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Text(
@@ -271,10 +295,10 @@ class DeleteButton extends StatelessWidget {
               chefData.deleted);
           await DataBaseController(uid: chefData.uid)
               .deleteTransaction(transaction.uid);
-          await DataBaseController(uid: transaction.workerId)
-              .deleteWorkersTransaction(transaction.uid);
+
           transactionsController.loading(false);
-          Navigator.of(context).pop();
+          Get.back();
+          //    Navigator.of(context).pop();
         });
   }
 }
@@ -314,6 +338,7 @@ class _AddTransactionState extends State<AddTransaction> {
   final _formKey1 = GlobalKey<FormState>();
 
   final List<String> typeList = [
+    '',
     'Achat materiaux',
     'Gaz',
     'Nouriture',
@@ -322,8 +347,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm");
   final TransactionsController transactionsController =
-  Get.put(TransactionsController());
-
+      Get.put(TransactionsController());
 
   var uuid = Uuid();
 
@@ -333,18 +357,26 @@ class _AddTransactionState extends State<AddTransaction> {
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return GetX<TransactionsController>(builder: (transactionsController) {
       return SingleChildScrollView(
-        child: this.widget.transaction.name == ''
-            ? SizedBox()
-            : Form(
+        child: Form(
           key: _formKey1,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  'Ajouter/Modifier la transaction:',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor),
+                ),
                 SizedBox(
                   height: 15,
                 ),
@@ -362,24 +394,23 @@ class _AddTransactionState extends State<AddTransaction> {
                       if (snapshot.hasData) {
                         List<Chantier> chantierList;
                         chantierList = snapshot.data;
-                        transactionsController.chantier(this.widget.transaction
-                            .chantier != null &&
-                            this.widget.transaction.chantier != '' ? this.widget
-                            .transaction.chantier :
-                        chantierList[0].name);
+                       /* transactionsController.chantier(
+                            this.widget.transaction.chantier != null &&
+                                    this.widget.transaction.chantier != ''
+                                ? this.widget.transaction.chantier
+                                : chantierList[0].name);*/
 
                         /*   transactionsController.chantier(
                                   this.widget.transaction.chantier ??
                                       chantierList[0].name);*/
 
+                        transactionsController.firstChantier(chantierList[0].name);
+
                         return ChantierDropDownField(
                           chantierList,
                           transactionsController,
                           this.widget.transaction,
-                              (val) {
-                            transactionsController.chantier(val);
-                            print(transactionsController.chantier.value);
-                          },
+
                         );
                       } else {
                         return CircularProgressIndicator();
@@ -388,81 +419,70 @@ class _AddTransactionState extends State<AddTransaction> {
                 SizedBox(
                   height: 15,
                 ),
-                TypeDropDownField(typeList, transactionsController,
-                    this.widget.transaction),
+                TypeDropDownField(
+                    typeList, transactionsController, this.widget.transaction),
                 SizedBox(
                   height: 15,
                 ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Payer un travailleur',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    CustomCheckBox(transactionsController),
-                  ],
-                ),
-                SizedBox(
-                  height:
-                  transactionsController.checkBoxValue.value ? 15 : 0,
-                ),
-                transactionsController.checkBoxValue.value
+
+
+                transactionsController.type.value == 'Payement'
                     ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Selectionner un travailleur',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    StreamBuilder<List<Workerr>>(
-                        stream: DataBaseController().workers,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<Workerr> list = snapshot.data;
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Selectionner un travailleur',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          StreamBuilder<List<Workerr>>(
+                              stream: DataBaseController().workers,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  List<Workerr> list = snapshot.data;
 
-
-                            return WorkersDropDownField(
-                              this.widget.transaction,
-                              transactionsController,
-                              snapshot,
-                              list, (val) {
-                              affectDropDownValueToTransactionController(
-                                  transactionsController, list, val);
-                            },);
-                          } else {
-                            return SizedBox();
-                          }
-                        }),
-                  ],
-                )
+                                  return WorkersDropDownField(
+                                    this.widget.transaction,
+                                    transactionsController,
+                                    snapshot,
+                                    list,
+                                    (val) {
+                                      affectDropDownValueToTransactionController(
+                                          transactionsController, list, val);
+                                    },
+                                  );
+                                } else {
+                                  return SizedBox();
+                                }
+                              }),
+                        ],
+                      )
                     : SizedBox(),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     this.widget.transaction.name == ''
                         ? SizedBox()
                         : AddEditButton(
-                        this.widget.transaction,
-                        transactionsController,
-                        this.widget.chefData,
-                        _formKey1,
-                        dateFormat,
-                        uuid),
-                    SizedBox(width: 20,),
+                            this.widget.transaction,
+                            transactionsController,
+                            this.widget.chefData,
+                            _formKey1,
+                            dateFormat,
+                            uuid),
+                    SizedBox(
+                      width: 20,
+                    ),
                     this.widget.transaction.uid != null
                         ? transactionsController.loading.value
-                        ? SizedBox()
-                        : DeleteButton(
-                        transactionsController,
-                        this.widget.chefData,
-                        this.widget.transaction)
+                            ? SizedBox()
+                            : DeleteButton(transactionsController,
+                                this.widget.chefData, this.widget.transaction)
                         : SizedBox(),
                   ],
                 )

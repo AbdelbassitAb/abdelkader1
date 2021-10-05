@@ -12,45 +12,62 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
-      child: Card(
-        color: primaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-        child: ListTile(
-
-          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          trailing: Icon(Icons.chevron_right,color: Colors.white,size: 30,),
-          leading: CircleAvatar(
-            radius: 25.0,
-            backgroundImage: AssetImage('assets/images/user.png'),
-            backgroundColor: Colors.white,
+      child: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.15),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: Offset(0, 1), // changes position of shadow
           ),
-          title: Text(
-            data.name,
-            style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
+        ]),
+        child: Card(
+        //  color: primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          subtitle: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Text(
-              data.numTlf,
-              style: TextStyle(fontSize: 16,color: Colors.white.withOpacity(0.7)),
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: ListTile(
+            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            trailing: Icon(
+              Icons.chevron_right,
+              color: primaryColor,
+              size: 30,
             ),
+            leading: CircleAvatar(
+              radius: 25.0,
+              backgroundImage: AssetImage('assets/images/user.png'),
+              backgroundColor: Colors.white,
+            ),
+            title: Text(
+              data.name,
+              style: TextStyle(
+                  fontSize: 20,
+                  color: primaryColor,
+                 ),
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Text(
+                data.numTlf,
+                style: TextStyle(
+                    fontSize: 18, color:Colors.grey),
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Profile_Transactions(
+                            uid: data.uid,
+                            name: data.name,
+                            email: data.email,
+                            phoneNumber: data.numTlf,
+                            money: data.argent,
+                            deleted: data.deleted,
+                          )));
+            },
           ),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Profile_Transactions(
-                      uid: data.uid,
-                      name: data.name,
-                      email: data.email,
-                      phoneNumber: data.numTlf,
-                      money: data.argent,
-                      deleted: data.deleted,
-                    )));
-          },
         ),
       ),
     );

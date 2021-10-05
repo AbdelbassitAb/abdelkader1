@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Oui'),
+                child: Text('Oui',style: TextStyle(color: primaryColor),),
                 onPressed: () {
                   DataBaseController().updateUserData(
                       this.widget.uid,
@@ -106,7 +106,7 @@ class _ProfileState extends State<Profile> {
                 },
               ),
               TextButton(
-                child: Text('Non'),
+                child: Text('Non',style: TextStyle(color: primaryColor)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -174,7 +174,7 @@ class _ProfileState extends State<Profile> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Text(
-                      'Ajouter',
+                      'Soustraire',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
@@ -228,27 +228,24 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 20,
                 ),
-
                 GestureDetector(
                   onTap: () {},
                   child: url != null
                       ? Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(url),
-                          fit: BoxFit.cover),
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                    ),
-                  )
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(url), fit: BoxFit.cover),
+                            color: Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                        )
                       : CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.white,
-                    backgroundImage:
-                    AssetImage('assets/images/user.png'),
-                  ),
+                          radius: 60,
+                          backgroundColor: Colors.white,
+                          backgroundImage: AssetImage('assets/images/user.png'),
+                        ),
                 ),
                 SizedBox(
                   height: 20,
@@ -258,14 +255,16 @@ class _ProfileState extends State<Profile> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:Radius.circular(20) ),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
                     ),
                     child: Column(children: [
                       Form(
                         key: _formKey,
                         child: Column(
                           children: <Widget>[
-
+                            SizedBox(height: 20,),
                             TextFormField(
                               initialValue: this.widget.name,
                               decoration: textinputDecoration.copyWith(
@@ -276,7 +275,8 @@ class _ProfileState extends State<Profile> {
                               ),
                               validator: (val) =>
                                   val.isEmpty ? 'entrer un nom' : null,
-                              onChanged: (val) => setState(() => _currentName = val),
+                              onChanged: (val) =>
+                                  setState(() => _currentName = val),
                             ),
                             SizedBox(
                               height: 20,
@@ -291,7 +291,8 @@ class _ProfileState extends State<Profile> {
                               ),
                               validator: (val) =>
                                   val.isEmpty ? 'entrer un email' : null,
-                              onChanged: (val) => setState(() => _currentEmail = val),
+                              onChanged: (val) =>
+                                  setState(() => _currentEmail = val),
                             ),
                             SizedBox(
                               height: 20,
@@ -314,15 +315,11 @@ class _ProfileState extends State<Profile> {
                             SizedBox(
                               height: 20,
                             ),
-
-
-
                             Container(
                               alignment: Alignment.centerLeft,
-                            //  height: 47,
+                              //  height: 47,
                               width: size.width * 0.9,
-                              padding:
-                                  EdgeInsets.symmetric( horizontal: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
@@ -369,10 +366,11 @@ class _ProfileState extends State<Profile> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: RaisedButton(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                    padding: EdgeInsets.symmetric(vertical: 10),
                                     color: (_currentPhoneNumber !=
                                                 this.widget.phoneNumber ||
-                                            _currentEmail != this.widget.email ||
+                                            _currentEmail !=
+                                                this.widget.email ||
                                             _currentName != this.widget.name ||
                                             _currentMoney != this.widget.money)
                                         ? primaryColor
@@ -384,11 +382,13 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     onPressed: (_currentPhoneNumber !=
                                                 this.widget.phoneNumber ||
-                                            _currentEmail != this.widget.email ||
+                                            _currentEmail !=
+                                                this.widget.email ||
                                             _currentName != this.widget.name ||
                                             _currentMoney != this.widget.money)
                                         ? () async {
-                                            if (_formKey.currentState.validate()) {
+                                            if (_formKey.currentState
+                                                .validate()) {
                                               await DataBaseController(
                                                       uid: this.widget.uid)
                                                   .updateUserData(
@@ -398,20 +398,23 @@ class _ProfileState extends State<Profile> {
                                                       _currentEmail ??
                                                           this.widget.email,
                                                       _currentPhoneNumber ??
-                                                          this.widget.phoneNumber,
+                                                          this
+                                                              .widget
+                                                              .phoneNumber,
                                                       _currentMoney ??
                                                           this.widget.money,
                                                       this.widget.deleted);
 
-                                              if (_currentMoney < this.widget.money) {
+                                              if (_currentMoney <
+                                                  this.widget.money) {
                                                 await DataBaseController(
                                                         uid: this.widget.uid)
                                                     .updateUserTransaction(
                                                         uuid.v4(),
-                                                        '',
+                                                        this.widget.name,
                                                         'Abdelkader a payé ${this.widget.name}',
-                                                        dateFormat
-                                                            .format(DateTime.now()),
+                                                        dateFormat.format(
+                                                            DateTime.now()),
                                                         _currentMoney ??
                                                             this.widget.money,
                                                         -double.parse(somme),
@@ -420,15 +423,16 @@ class _ProfileState extends State<Profile> {
                                                         '',
                                                         '');
                                               }
-                                              if (_currentMoney > this.widget.money) {
+                                              if (_currentMoney >
+                                                  this.widget.money) {
                                                 await DataBaseController(
                                                         uid: this.widget.uid)
                                                     .updateUserTransaction(
                                                         uuid.v4(),
-                                                        '',
+                                                        this.widget.name,
                                                         'Abdelkader a payé ${this.widget.name}',
-                                                        dateFormat
-                                                            .format(DateTime.now()),
+                                                        dateFormat.format(
+                                                            DateTime.now()),
                                                         _currentMoney ??
                                                             this.widget.money,
                                                         double.parse(somme),
@@ -447,8 +451,9 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                       ),
-
-                      SizedBox(height: 60,)
+                      SizedBox(
+                        height: 60,
+                      )
                     ])),
               ],
             ),

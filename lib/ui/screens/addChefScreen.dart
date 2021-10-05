@@ -52,6 +52,14 @@ class _AddChefScreenState extends State<AddChefScreen> {
                 ),
               )
             : Container(
+
+                decoration: BoxDecoration(
+                 // color: secondaryColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  )
+                ),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 child: Form(
                   key: _formKey,
@@ -143,7 +151,7 @@ class _AddChefScreenState extends State<AddChefScreen> {
                           hintStyle: TextStyle(color: Colors.grey),
                         ),
                         validator: (val) =>
-                            val.isEmpty  ? 'Entrer une somme d\'argent ' : null,
+                            val.isEmpty ? 'Entrer une somme d\'argent ' : null,
                         controller: money,
                       ),
                       SizedBox(

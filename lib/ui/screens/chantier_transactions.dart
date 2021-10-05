@@ -17,6 +17,8 @@ class _ChantierTransactionsState extends State<ChantierTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       // backgroundColor: secondaryColor,
+
         appBar: AppBar(
           elevation: 0,
           title: Text(this.widget.name),
@@ -27,7 +29,7 @@ class _ChantierTransactionsState extends State<ChantierTransactions> {
           children: [
             StreamBuilder<List<TR>>(
                 stream:
-                DataBaseController().chantier(this.widget.name),
+                DataBaseController().transactionQuery('chantier', this.widget.name),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data.length != 0) {

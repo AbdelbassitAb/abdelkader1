@@ -13,6 +13,8 @@ class _GazState extends State<Gaz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     // backgroundColor: secondaryColor,
+
       drawer: MainDrawer(),
       appBar: AppBar(
         title: Text('Gaz'),
@@ -22,7 +24,7 @@ class _GazState extends State<Gaz> {
       body: Stack(
         children: [
           StreamBuilder<List<TR>>(
-              stream: DataBaseController().transactionsOf('Gaz'),
+              stream: DataBaseController().transactionQuery('type', 'Gaz'),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data != null) {

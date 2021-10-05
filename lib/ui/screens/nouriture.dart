@@ -14,6 +14,8 @@ class _NouritureState extends State<Nouriture> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+   //   backgroundColor: secondaryColor,
+
       drawer: MainDrawer(),
       appBar: AppBar(
         title: Text('Nouriture'),
@@ -23,7 +25,7 @@ class _NouritureState extends State<Nouriture> {
       body: Stack(
         children: [
           StreamBuilder<List<TR>>(
-              stream: DataBaseController().transactionsOf('Nouriture'),
+              stream: DataBaseController().transactionQuery('type','Nouriture'),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data != null) {

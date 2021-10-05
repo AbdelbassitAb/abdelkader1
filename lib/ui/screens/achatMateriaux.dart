@@ -13,6 +13,7 @@ class _AchatMateriauxState extends State<AchatMateriaux> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: secondaryColor,
       drawer: MainDrawer(),
       appBar: AppBar(
         title: Text('Achat materiaux'),
@@ -20,7 +21,7 @@ class _AchatMateriauxState extends State<AchatMateriaux> {
         backgroundColor: primaryColor,
       ),
       body: StreamBuilder<List<TR>>(
-          stream: DataBaseController().transactionsOf('Achat materiaux'),
+          stream: DataBaseController().transactionQuery('type', 'Achat materiaux'),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data != null) {

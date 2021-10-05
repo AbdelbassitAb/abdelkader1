@@ -16,6 +16,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    //  backgroundColor: secondaryColor,
       drawer: MainDrawer(),
       appBar: AppBar(
         title: Text('Page principale'),

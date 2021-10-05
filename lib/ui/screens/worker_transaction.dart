@@ -17,6 +17,8 @@ class _WorkerTransactionsState extends State<WorkerTransactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       // backgroundColor: secondaryColor,
+
         appBar: AppBar(
           elevation: 0,
           title: Text('Transactions'),
@@ -27,7 +29,7 @@ class _WorkerTransactionsState extends State<WorkerTransactions> {
           children: [
             StreamBuilder<List<TR>>(
                 stream:
-                DataBaseController(uid: this.widget.uid).workerTransactions,
+                DataBaseController(uid: this.widget.uid).transactionQuery('workerId', this.widget.uid),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data.length != 0) {

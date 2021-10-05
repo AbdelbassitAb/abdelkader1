@@ -1,4 +1,5 @@
 import 'package:abdelkader1/constants/colors.dart';
+import 'package:abdelkader1/ui/screens/statistics.dart';
 import 'package:abdelkader1/ui/screens/screens.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class MainDrawer extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           width: double.infinity,
-          color:primaryColor,
+          color: primaryColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -35,7 +36,11 @@ class MainDrawer extends StatelessWidget {
         ),
         DrawerCard(
           text: 'Home',
-          icon: Icon(Icons.home,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.home,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushReplacement(
@@ -44,7 +49,11 @@ class MainDrawer extends StatelessWidget {
         ),
         DrawerCard(
           text: 'Travailleurs',
-          icon: Icon(Icons.people,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.people,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushReplacement(
@@ -53,7 +62,11 @@ class MainDrawer extends StatelessWidget {
         ),
         DrawerCard(
           text: 'Chefs chantier',
-          icon: Icon(Icons.groups,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.groups,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushReplacement(
@@ -62,16 +75,24 @@ class MainDrawer extends StatelessWidget {
         ),
         DrawerCard(
           text: 'Achat materiaux',
-          icon: Icon(Icons.construction,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.construction,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => AchatMateriaux()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => AchatMateriaux()));
           },
         ),
         DrawerCard(
           text: 'Gaz',
-          icon: Icon(Icons.car_repair,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.car_repair,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushReplacement(
@@ -80,7 +101,11 @@ class MainDrawer extends StatelessWidget {
         ),
         DrawerCard(
           text: 'Nouriture',
-          icon: Icon(Icons.fastfood,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.fastfood,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushReplacement(
@@ -89,7 +114,11 @@ class MainDrawer extends StatelessWidget {
         ),
         DrawerCard(
           text: 'Payement',
-          icon: Icon(Icons.money,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.money,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
             Navigator.pushReplacement(
@@ -98,11 +127,28 @@ class MainDrawer extends StatelessWidget {
         ),
         DrawerCard(
           text: 'Chantiers',
-          icon: Icon(Icons.place,color: primaryColor,size: 25,),
+          icon: Icon(
+            Icons.place,
+            color: primaryColor,
+            size: 25,
+          ),
           onTap: () {
             Navigator.pop(context);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Chantiers()));
+          },
+        ),
+        DrawerCard(
+          text: 'Statistics',
+          icon: Icon(
+            Icons.query_stats,
+            color: primaryColor,
+            size: 25,
+          ),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
           },
         ),
       ],

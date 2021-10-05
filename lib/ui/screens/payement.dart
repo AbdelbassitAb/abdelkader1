@@ -13,6 +13,8 @@ class _PayementState extends State<Payement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    //  backgroundColor: secondaryColor,
+
       drawer: MainDrawer(),
       appBar: AppBar(
         title: Text('Payement'),
@@ -22,7 +24,7 @@ class _PayementState extends State<Payement> {
       body: Stack(
         children: [
           StreamBuilder<List<TR>>(
-              stream: DataBaseController().transactionsOf('Payement'),
+              stream: DataBaseController().transactionQuery('type','Payement'),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data != null) {
